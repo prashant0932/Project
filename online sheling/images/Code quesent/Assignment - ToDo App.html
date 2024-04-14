@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            display: flex;
+        }
+
+        .left-pane {
+            flex: 1;
+            padding: 20px;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .right-pane {
+            flex: 1;
+            padding: 20px;
+            background-color: #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #taskInput {
+            width: 70%;
+            height: 100px;
+            font-size: 30px;
+            margin-bottom: 10px;
+            border: none;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        li {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .completed {
+            text-decoration: line-through;
+            color: #888;
+        }
+
+        .icon {
+            cursor: pointer;
+            margin-left: 10px;
+        }
+    </style>
+    <title>ToDo App</title>
+</head>
+<body>
+    <div class="container">
+        <div class="left-pane">
+            <h1>Task List</h1>
+            <div>
+                Add the tasks to your list by typing to the right and pressing enter.
+                You may then find tasks below.
+            </div>
+            <ul id="taskList"></ul>
+        </div>
+        <div class="right-pane">
+            <textarea id="taskInput" placeholder="I need to.."></textarea>
+        </div>
+    </div>
+    <script>
+          document.addEventListener('DOMContentLoaded', () => {
+    const taskList = document.getElementById('taskList');
+    const taskInput = document.getElementById('taskInput');
+
+    // Load tasks from local storage on page load
+    loadTasks();
+
+    taskInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && taskInput.value.trim() !== '') {
+            // Add task to local storage and update the UI
+            addTask(taskInput.value.trim());
+            taskInput.value = '';
+        }
+    });
+
+    taskList.addEventListener('click', (e) => {
+        const target = e.target;
+
+        if (target.classList.contains('delete')) {
+            // Delete task
+            deleteTask(target.parentElement.dataset.id);
+        } else if (target.classList.contains('complete')) {
+            // Mark task as complete
+            toggleTaskStatus(target.parentElement.dataset.id);
+        } else if (target.classList.contains('edit')) {
+            // Edit task
+            editTask(target.parentElement.dataset.id);
+        }
+    });
+
+    function loadTasks() {
+        const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+        taskList.innerHTML = '';
+
+        tasks.forEach(task => {
+            addTaskToUI(task);
+        });
+    }
+
+    function addTask(taskName) {
+        const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+        const newTask = { id: Date.now(), name: taskName, completed: false };
+        tasks.push(newTask);
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+
+        addTaskToUI(newTask);
+    }
+
+    function addTaskToUI(task) {
+        const li = document.createElement('li');
+        li.dataset.id = task.id;
+
+        li.innerHTML = `
+            <span class="${task.completed ? 'completed' : ''}">${task.name}</span>
+            <span class="icon complete">&#10003;</span>
+            <span class="icon delete">&#10007;</span>
+            <span class="icon edit">&#9998;</span>
+        `;
+
+        taskList.appendChild(li);
+    }
+
+    function deleteTask(taskId) {
+        let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+        tasks = tasks.filter(task => task.id != taskId);
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+
+        loadTasks();
+    }
+
+    function toggleTaskStatus(taskId) {
+        let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+        tasks = tasks.map(task => {
+            if (task.id == taskId) {
+                task.completed = !task.completed;
+            }
+            return task;
+        });
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+
+        loadTasks();
+    }
+
+    function editTask(taskId) {
+        const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+        const taskToEdit = tasks.find(task => task.id == taskId);
+
+        const newName = prompt('Edit task name:', taskToEdit.name);
+
+        if (newName !== null) {
+            taskToEdit.name = newName;
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+
+            loadTasks();
+        }
+    }
+});
+
+    </script>
+</body>
+</html>

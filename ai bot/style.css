@@ -1,0 +1,32 @@
+#chatbot {
+    width: 300px;
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
+  
+  #input {
+    display: flex;
+  }
+  
+  #userInput {
+    flex-grow: 1;
+    margin-right: 5px;
+  }
+  
+  #messages {
+    height: 300px;
+    overflow-y: scroll;
+    margin-top: 5px;
+  }
+  
+  .message {
+    margin-bottom: 5px;
+  }
+  
+  .user-message {
+    text-align: right;
+  }
+  
+  .ai-message {
+    text-align: left;
+  }

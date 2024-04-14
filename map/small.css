@@ -1,0 +1,71 @@
+.logo  {
+    width: 100%;
+    height: 70px;
+    position: absolute;
+
+    display: flex;
+    justify-content: start;
+    align-self: center;
+
+ }
+
+ .logo img {
+    display: block;
+    width: 223px;
+    height: 65px;
+    position: absolute;
+    left: -9px;
+    top: 2px;
+
+ }
+
+ .nav-main ul {
+     height: 40vh;
+     width: 200px;
+     position: fixed;
+     top: -1px;
+   right: 10px;
+     background-color: whitesmoke;
+     border-radius: 10px;
+     visibility: hidden;
+
+     box-shadow: none;
+ }
+ .nav-main ul li {
+
+     position: relative;
+     left: 30px;
+     top: 10px;
+
+ }
+ .nav-main{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height:8vh;
+    background-color: #fff;
+    display: flex;
+    flex-wrap: wrap;
+    z-index: 1;
+    justify-content: center;
+    align-items: center;
+
+}
+.toggle button {
+    position: absolute;
+    right: 10px;
+    z-index: 1;
+   top: 17px;
+    background: transparent;
+    border: none;
+}
+#mapid{
+    position: fixed;
+    height:90vh;
+    width: 100%;
+    /* border-radius: 0px; */
+    top: 8vh;
+    left: 0px;
+    z-index: -1;
+}
